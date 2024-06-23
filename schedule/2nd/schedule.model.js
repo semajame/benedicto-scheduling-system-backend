@@ -2,8 +2,8 @@ const sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  const Schedule = sequelize.define(
-    "Schedule",
+  const SecondSchedule = sequelize.define(
+    "SecondSchedule",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -28,18 +28,18 @@ module.exports = (sequelize) => {
       },
       start: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       end: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {
-      tableName: "firstschedules",
+      tableName: "secondschedules",
       timestamps: false,
     }
   );
 
-  return Schedule;
+  return SecondSchedule;
 };

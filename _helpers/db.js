@@ -25,6 +25,7 @@ async function initialize() {
   // init models and add them to the exported db object
   db.Account = require("../accounts/account.model")(sequelize);
   db.firstSchedule = require("../schedule/1st/schedule.model")(sequelize);
+  db.secondSchedule = require("../schedule/2nd/schedule.model")(sequelize);
   db.RefreshToken = require("../accounts/refresh-token.model")(sequelize);
 
   // define relationships

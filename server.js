@@ -7,6 +7,8 @@ const cors = require("cors");
 const errorHandler = require("_middleware/error-handler");
 const scheduleRoutes = require("./schedule/1st/schedule.controller");
 
+const secondSchedRoute = require("./schedule/2nd/schedule.controller");
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -22,6 +24,7 @@ app.use(
 // api routes
 app.use("/accounts", require("./accounts/accounts.controller"));
 app.use("/schedule", scheduleRoutes);
+app.use("/schedule", secondSchedRoute);
 // swagger docs route
 app.use("/api-docs", require("_helpers/swagger"));
 
