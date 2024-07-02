@@ -27,6 +27,7 @@ async function initialize() {
   db.firstSchedule = require("../schedule/1st/schedule.model")(sequelize);
   db.secondSchedule = require("../schedule/2nd/schedule.model")(sequelize);
   db.RefreshToken = require("../accounts/refresh-token.model")(sequelize);
+  db.Teachers = require("../teachers/teachers.model")(sequelize);
 
   // define relationships
   db.Account.hasMany(db.RefreshToken, { onDelete: "CASCADE" });

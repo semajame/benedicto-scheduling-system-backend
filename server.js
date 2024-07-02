@@ -25,6 +25,7 @@ app.use(
 app.use("/accounts", require("./accounts/accounts.controller"));
 app.use("/schedule", scheduleRoutes);
 app.use("/schedule", secondSchedRoute);
+app.use("/teachers", require("./teachers/teachers.controller"));
 // swagger docs route
 app.use("/api-docs", require("_helpers/swagger"));
 

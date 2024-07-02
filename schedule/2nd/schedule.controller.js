@@ -6,12 +6,12 @@ const validateRequest = require("_middleware/validate-request");
 
 function scheduleSchema(req, res, next) {
   const schema = Joi.object({
-    sub_code: Joi.string().required(),
+    subject_code: Joi.string().required(),
     subject: Joi.string().required(),
     units: Joi.number().integer().required(),
-    room: Joi.string().required(),
-    from: Joi.string().isoDate().required(),
-    to: Joi.string().isoDate().required(),
+    location: Joi.string().required(),
+    start: Joi.string().isoDate().required(),
+    end: Joi.string().isoDate().required(),
   });
   validateRequest(req, next, schema);
 }
@@ -28,15 +28,19 @@ router.get("/2nd-year", async (req, res) => {
 
 router.post("/2nd-year", scheduleSchema, async (req, res) => {
   try {
-    const { sub_code, subject, units, room, from, to } = req.body;
-    const newSchedule = await db.secondSchedule.create({
-      sub_code,
-      subject,
-      units,
-      room,
-      from,
-      to,
-    });
+    const params = req.body;
+
+    // Check if the sub_code already exists
+    if (
+      await db.secondSchedule.findOne({
+        where: { subject_code: params.subject_code },
+      })
+    ) {
+      return res.status(400).json({ message: "Subject code already exists" });
+    } 
+
+    // Create the new schedule
+    const newSchedule = await db.secondSchedule.create(params);
     res.status(201).json(newSchedule);
   } catch (err) {
     console.error("Error executing query:", err);
