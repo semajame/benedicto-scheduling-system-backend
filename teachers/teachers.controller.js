@@ -1,4 +1,5 @@
 const express = require("express");
+const { Sequelize } = require("sequelize");
 const router = express.Router();
 const Joi = require("joi");
 const db = require("_helpers/db");
@@ -25,18 +26,29 @@ router.get("/all-teachers", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const teachers = await db.Teachers.findByPk(id);
+    res.json(teachers);
+  } catch (err) {
+    console.error("Error executing query:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.post("/add-teacher", teacherSchema, async (req, res) => {
   try {
     const params = req.body;
 
     // Check if the sub_code already exists
-    // if (
-    //   await db.Teachers.findOne({
-    //     where: { subject_code: params.subject_code },
-    //   })
-    // ) {
-    //   return res.status(400).json({ message: "Subject code already exists" });
-    // }
+    if (
+      await db.Teachers.findOne({
+        where: { firstName: params.firstName, lastName: params.lastName },
+      })
+    ) {
+      return res.status(400).json({ message: "Teacher already exists" });
+    }
 
     // Create the new teacher
     const newTeacher = await db.Teachers.create(params);
@@ -47,6 +59,43 @@ router.post("/add-teacher", teacherSchema, async (req, res) => {
   }
 });
 
+router.put("/edit-teacher/:id", teacherSchema, async (req, res) => {
+  try {
+    const teacherId = req.params.id;
+    const params = req.body;
+
+    // Find the teacher by the unique identifier (teacherId)
+    const teacher = await db.Teachers.findOne({
+      where: { id: teacherId },
+    });
+
+    if (!teacher) {
+      return res.status(404).json({ message: "Teacher not found" });
+    }
+
+    // Check if another teacher with the same firstName and lastName already exists
+    const existingTeacher = await db.Teachers.findOne({
+      where: {
+        firstName: params.firstName,
+        lastName: params.lastName,
+        id: { [Sequelize.Op.ne]: teacherId },
+      },
+    });
+
+    if (existingTeacher) {
+      return res
+        .status(400)
+        .json({ message: "Another teacher with the same name already exists" });
+    }
+
+    // Update the teacher
+    await teacher.update(params);
+    res.status(200).json(teacher);
+  } catch (err) {
+    console.error("Error executing query:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
 // Additional CRUD operations (PUT, DELETE) can be added here
 
 module.exports = router;
