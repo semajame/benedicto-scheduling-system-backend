@@ -96,6 +96,24 @@ router.put("/edit-teacher/:id", teacherSchema, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+router.delete("/delete-teacher/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const teacher = await db.Teachers.findByPk(id);
+
+    if (!teacher) {
+      return res.status(404).json({ message: "Teacher not found" });
+    }
+
+    await teacher.destroy();
+    res.status(200).json({ message: "Teacher deleted successfully" });
+  } catch (err) {
+    console.error("Error executing query:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Additional CRUD operations (PUT, DELETE) can be added here
 
 module.exports = router;
