@@ -50,6 +50,10 @@ router.post("/add-teacher", teacherSchema, async (req, res) => {
       return res.status(400).json({ message: "Teacher already exists" });
     }
 
+    if (req.file) {
+      params.pictureUrl = `/uploads/${req.file.filename}`;
+    }
+
     // Create the new teacher
     const newTeacher = await db.Teachers.create(params);
     res.status(201).json(newTeacher);
@@ -86,6 +90,10 @@ router.put("/edit-teacher/:id", teacherSchema, async (req, res) => {
       return res
         .status(400)
         .json({ message: "Another teacher with the same name already exists" });
+    }
+
+    if (req.file) {
+      params.pictureUrl = `/uploads/${req.file.filename}`;
     }
 
     // Update the teacher

@@ -34,6 +34,14 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      recurrencePattern: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      background: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       tableName: "firstschedules",
