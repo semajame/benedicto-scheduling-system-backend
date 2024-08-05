@@ -12,6 +12,8 @@ function scheduleSchema(req, res, next) {
     location: Joi.string().required(),
     start: Joi.string().isoDate().required(),
     end: Joi.string().isoDate().required(),
+    recurrencePattern: Joi.string(),
+    background: Joi.string(),
   });
   validateRequest(req, next, schema);
 }
@@ -37,7 +39,7 @@ router.post("/2nd-year", scheduleSchema, async (req, res) => {
       })
     ) {
       return res.status(400).json({ message: "Subject code already exists" });
-    } 
+    }
 
     // Create the new schedule
     const newSchedule = await db.secondSchedule.create(params);
