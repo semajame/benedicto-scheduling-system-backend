@@ -26,7 +26,9 @@ async function initialize() {
   db.Account = require("../accounts/account.model")(sequelize);
   db.firstSchedule = require("../schedule/1st/schedule.model")(sequelize);
   db.secondSchedule = require("../schedule/2nd/schedule.model")(sequelize);
+  db.thirdSchedule = require("../schedule/3rd/schedule.model")(sequelize);
   db.RefreshToken = require("../accounts/refresh-token.model")(sequelize);
+
   db.Teachers = require("../teachers/teachers.model")(sequelize);
 
   // define relationships

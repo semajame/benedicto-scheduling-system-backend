@@ -2,8 +2,8 @@ const sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  const Schedule = sequelize.define(
-    "Schedule",
+  const ThirdSchedule = sequelize.define(
+    "ThirdSchedule",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -27,16 +27,12 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       start: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.DATE,
+        allowNull: true,
       },
       end: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      day: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.DATE,
+        allowNull: true,
       },
       recurrencePattern: {
         type: DataTypes.STRING,
@@ -48,10 +44,10 @@ module.exports = (sequelize) => {
       },
     },
     {
-      tableName: "firstschedules",
+      tableName: "thirdschedules",
       timestamps: false,
     }
   );
 
-  return Schedule;
+  return ThirdSchedule;
 };
